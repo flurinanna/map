@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <title>MAP</title>
+
+    <style type="text/css">
+        .svg-container {
+            position: absolute;
+        }
+
+        svg {
+            position: relative;
+        }
+
+        text {
+            font-family: sans-serif;
+            font-size: 0.5em;
+        }
+
+        html,
+        body {
+
+            font-family: arial;
+            font-size: 20px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <h1>Indonesia</h1>
+    <div class="svg-container">
+        <img src="Flag_map_of_Indonesia.jpg" style="width: 720px">
+    </div>
+
+
+
+
+    <script src="https://d3js.org/d3.v5.js"></script>
+    <script src="js/d3.js"></script>
+
+
+    <script>
+        var geodata = [{
+                "lat": -6.2151565,
+                "lng": 106.8203259,
+                "r": 3 * 3,
+                "name": "Jakarta",
+                "picture": "images/jakarta.png"
+            },
+            {
+                "lat": -5.163245,
+                "lng": 119.450546,
+                "r": 3 * 3,
+                "name": "Makkasar",
+                "picture": "images/makkasar.png"
+            },
+            {
+                "lat": -7.797068399999999,
+                "lng": 110.3705267,
+                "r": 3 * 3,
+                "name": "Yogjakarta",
+                "picture": "images/yogjakarta.png"
+            },
+            {
+                "lat": -6.903828499999999,
+                "lng": 107.6052744,
+                "r": 1 * 3,
+                "name": "Bangung",
+                "picture": "images/bandung.png"
+            },
+            {
+                "lat": -7.272828,
+                "lng": 112.748725,
+                "r": 1 * 3,
+                "name": "Surabaya",
+                "picture": "images/surabaya.png"
+
+            },
+            {
+                "lat": -8.695547999999999,
+                "lng": 115.182128,
+                "r": 4 * 3,
+                "name": "Legian",
+                "picture": "images/legian.png"
+
+            },
+            {
+                "lat": -4.1397579,
+                "lng": 120.030701,
+                "r": 1 * 3,
+                "name": "Sinkang",
+                "picture": "images/sinkang.png"
+            },
+            {
+                "lat": -5.571181,
+                "lng": 120.4800929,
+                "r": 5 * 3,
+                "name": "Bira",
+                "picture": "images/bira.png"
+
+            },
+            {
+                "lat": -2.981725,
+                "lng": 119.8993,
+                "r": 4 * 3,
+                "name": "RantePao",
+                "picture": "images/rantepao.png"
+            }
+        ];
+        /*
+                var geodata2 = [];
+
+                for (var i = 0; i < 10; i++) {
+                    geodata2.push({
+                        "lat": Math.random() * 360 - 180,
+                        "lng": Math.random() * 360 - 180,
+                        "r": Math.random() * 40,
+                    })
+                };
+        */
+        var svgContainer = d3.select("body")
+            .append("svg")
+            .attr("width", 720)
+            .attr("height", 720)
+            .attr("position", "relative");
+
+
+        var elem = svgContainer.selectAll("g").data([0]);
+        var inbetwen = elem.enter().append("g");
+
+        var last = undefined;
+        geodata.forEach((item) => {
+            var textCircleGroup = inbetwen.append("g");
+
+            var lat = item.lat;
+            var lng = item.lng;
+            var r = item.r;
+            var name = item.name;
+            var picture = item.picture;
+
+            var posY = 360 - (lat + 10.1) * 21;
+            var posX = (lng - 103) * 21;
+
+            textCircleGroup.attr('transform', 'translate(' + posX + ', ' + posY + ')');
+
+
+            var defs = textCircleGroup.append("defs");
+            defs.append("pattern")
+                .attr("id", name)
+                .attr("width", "100%")
+                .attr("height", "100%")
+                .append("image")
+                .attr("width", 160)
+                .attr("height", 160)
+                .attr("preserveAspectRatio", "none")
+                .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
+                // .attr("xlink:href", "images/image.png")
+                .attr("xlink:href", picture)
+
+            textCircleGroup.append("circle")
+                .style("fill", "green")
+                .style("fill-opacity", "0.6")
+                .attr("r", r)
+                .on("mouseover", function(d, i) {
+                    d3.select(this).transition()
+                        .duration("500")
+                        .attr("r", 80)
+                        .style("fill-opacity", "1")
+                        .style("fill", "url(#" + name + ")")
+                })
+                .on("mouseout", function(d, i) {
+                    d3.select(this).transition()
+                        .delay("100")
+                        .duration("200")
+                        .attr("r", r)
+                        .style("fill-opacity", "0.6").style("fill", "green");
+                });
+
+            textCircleGroup.append("text")
+                .text(name)
+
+        });
+
+
+
+
+
+        /*
+                var count = 0;
+                var modus = 1;
+                setInterval(() => {
+                    if (count >= 360) {
+                        modus = -1;
+                    }
+                    if (count <= 0) {
+                        modus = 1;
+                    }
+                    .attr("r", count += modus);
+
+                }, 1000 / 60); */
+
+    </script>
+
+</body>
+
+</html>
